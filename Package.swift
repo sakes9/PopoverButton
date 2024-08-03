@@ -14,6 +14,9 @@ let package = Package(
             name: "PopoverButton",
             targets: ["PopoverButton"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/nalexn/ViewInspector", from: "0.9.11")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
@@ -21,5 +24,5 @@ let package = Package(
             name: "PopoverButton"),
         .testTarget(
             name: "PopoverButtonTests",
-            dependencies: ["PopoverButton"]),
+            dependencies: ["PopoverButton", "ViewInspector"]),
     ])
