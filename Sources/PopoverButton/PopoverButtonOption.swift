@@ -9,7 +9,12 @@ import Foundation
 
 // MARK: - Popover Button Option
 
-struct PopoverButtonOption: Identifiable {
-    let id: Int // Identifier
-    let title: String // Title
+public struct PopoverButtonOption {
+    public let id: Int // Identifier
+    public let title: String // Title
+
+    public init(id: Int, title: String) {
+        self.id = id
+        self.title = title
+    }
 }

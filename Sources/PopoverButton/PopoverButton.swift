@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Delegate
 
-protocol PopoverButtonDelegate: AnyObject {
+public protocol PopoverButtonDelegate: AnyObject {
     /// Called when an option is selected
     /// - Parameter option: Selected option
     func onSelectedPopoverOption(option: PopoverButtonOption)
@@ -10,7 +10,7 @@ protocol PopoverButtonDelegate: AnyObject {
 
 // MARK: - Popover Button
 
-struct PopoverButton<Content: View>: View {
+public struct PopoverButton<Content: View>: View {
     // Properties
     let options: [PopoverButtonOption] // Options
     weak var delegate: PopoverButtonDelegate? // Delegate
@@ -29,17 +29,17 @@ struct PopoverButton<Content: View>: View {
     ///   - selectedOptionId: Selected option ID
     ///   - delegate: Delegate
     ///   - content: Content
-    init(options: [PopoverButtonOption],
-         selectedOptionId: Int? = nil,
-         delegate: PopoverButtonDelegate? = nil,
-         @ViewBuilder content: () -> Content) {
+    public init(options: [PopoverButtonOption],
+                selectedOptionId: Int? = nil,
+                delegate: PopoverButtonDelegate? = nil,
+                @ViewBuilder content: () -> Content) {
         self.options = options
         self.selectedOptionId = selectedOptionId
         self.delegate = delegate
         self.content = content()
     }
 
-    var body: some View {
+    public var body: some View {
         Button(action: {
             showPopover = true
         }, label: {
