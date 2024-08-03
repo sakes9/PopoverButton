@@ -18,7 +18,10 @@ struct PopoverButton<Content: View>: View {
 
     // State properties
     @State var selectedOptionId: Int? // Selected option ID
-    @State private var showPopover: Bool = false // Popover display flag
+    @State private var showPopover: Bool = true // Popover display flag
+
+    // For ViewInspector Tests
+    let inspection = Inspection<Self>()
 
     /// Initializer
     /// - Parameters:
@@ -73,6 +76,9 @@ struct PopoverButton<Content: View>: View {
             .padding()
             .presentationCompactAdaptation(PresentationAdaptation.popover) // Use popover presentation
         }
+        .onReceive(inspection.notice, perform: { output in
+            inspection.visit(self, output) // For ViewInspector Tests
+        })
     }
 }
 
