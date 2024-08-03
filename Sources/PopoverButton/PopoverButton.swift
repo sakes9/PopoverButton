@@ -18,7 +18,7 @@ public struct PopoverButton<Content: View>: View {
 
     // State properties
     @State var selectedOptionId: Int? // Selected option ID
-    @State private var showPopover: Bool = true // Popover display flag
+    @State private var showPopover: Bool = false // Popover display flag
 
     // For ViewInspector Tests
     let inspection = Inspection<Self>()
