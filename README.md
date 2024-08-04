@@ -37,8 +37,6 @@ import PopoverButton
 import SwiftUI
 
 struct ContentView: View {
-    let viewModel = ContentViewModel()
-
     let options: [PopoverButtonOption] = [
         PopoverButtonOption(id: 1, title: "Price: High to Low"),
         PopoverButtonOption(id: 2, title: "Price: Low to High"),
@@ -49,9 +47,11 @@ struct ContentView: View {
     var body: some View {
         HStack {
             Text("Sort button")
-            PopoverButton(options: options,
-                          selectedOptionId: 2,
-                          delegate: viewModel,
+            PopoverButton(action: { option in
+                              print("Selected option: \(option)")
+                          },
+                          options: options,
+                          defaultOptionId: 1,
                           content: {
                               Image(systemName: "line.3.horizontal.decrease")
                                   .resizable()
@@ -64,16 +64,10 @@ struct ContentView: View {
         .padding(.horizontal)
     }
 }
-
-class ContentViewModel: PopoverButtonDelegate {
-    func onSelectedPopoverOption(option: PopoverButtonOption) {
-        print("Selected option: \(option.title)")
-    }
-}
 ```
 
 ### Parameters
 
-- `options`: An array of `PopoverButtonOption` instances containing the options to display in the popover.
-- selectedOptionId: The ID of the selected option. Default is `nil`.
-- `delegate`: An instance of `PopoverButtonDelegate` to handle the selection of an option.
+- `action`: A callback that is called when an option is selected. It takes the selected `PopoverButtonOption` instance as an argument.
+- `options`: An array of `PopoverButtonOption` instances that contain the options to display in the popover.
+- `defaultOptionId`: The ID of the default option to display in the popover.
