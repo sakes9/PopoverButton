@@ -12,7 +12,7 @@ final class PopoverButtonTests: XCTestCase {
             PopoverButtonOption(id: 3, title: "Option 3")
         ]
         
-        let sut = PopoverButton(options: options, selectedOptionId: 2) {
+        let sut = PopoverButton(action: { _ in }, options: options, defaultOptionId: 2) {
             Text("Popover Button")
         }
         

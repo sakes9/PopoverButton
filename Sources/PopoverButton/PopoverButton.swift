@@ -1,23 +1,15 @@
 import SwiftUI
 
-// MARK: - Delegate
-
-public protocol PopoverButtonDelegate: AnyObject {
-    /// Called when an option is selected
-    /// - Parameter option: Selected option
-    func onSelectedPopoverOption(option: PopoverButtonOption)
-}
-
 // MARK: - Popover Button
 
 public struct PopoverButton<Content: View>: View {
     // Properties
+    let action: (PopoverButtonOption) -> Void // Action
     let options: [PopoverButtonOption] // Options
-    weak var delegate: PopoverButtonDelegate? // Delegate
     let content: Content // Content
 
     // State properties
-    @State var selectedOptionId: Int? // Selected option ID
+    @State var defaultOptionId: Int? // Default option ID
     @State private var showPopover: Bool = false // Popover display flag
 
     // For ViewInspector Tests
@@ -25,17 +17,17 @@ public struct PopoverButton<Content: View>: View {
 
     /// Initializer
     /// - Parameters:
+    ///  - action: Action
     ///   - options: Options
-    ///   - selectedOptionId: Selected option ID
-    ///   - delegate: Delegate
+    ///   - defaultOptionId: Default option ID
     ///   - content: Content
-    public init(options: [PopoverButtonOption],
-                selectedOptionId: Int? = nil,
-                delegate: PopoverButtonDelegate? = nil,
+    public init(action: @escaping (PopoverButtonOption) -> Void,
+                options: [PopoverButtonOption],
+                defaultOptionId: Int? = nil,
                 @ViewBuilder content: () -> Content) {
+        self.action = action
         self.options = options
-        self.selectedOptionId = selectedOptionId
-        self.delegate = delegate
+        self.defaultOptionId = defaultOptionId
         self.content = content()
     }
 
@@ -49,8 +41,8 @@ public struct PopoverButton<Content: View>: View {
             VStack {
                 ForEach(options, id: \.id) { option in
                     Button(action: {
-                        delegate?.onSelectedPopoverOption(option: option)
-                        selectedOptionId = option.id
+                        action(option)
+                        defaultOptionId = option.id
                         showPopover = false
                     }, label: {
                         HStack {
@@ -58,7 +50,7 @@ public struct PopoverButton<Content: View>: View {
                                 .foregroundColor(.gray)
 
                             // Show checkmark if the option is selected
-                            if option.id == selectedOptionId {
+                            if option.id == defaultOptionId {
                                 Spacer()
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.blue)
@@ -92,12 +84,17 @@ public struct PopoverButton<Content: View>: View {
         PopoverButtonOption(id: 4, title: "Oldest First")
     ]
 
-    return PopoverButton(options: options, selectedOptionId: 2, content: {
-        Image(systemName: "line.3.horizontal.decrease")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 18, height: 18)
-            .foregroundColor(.gray)
-            .clipShape(Circle())
-    })
+    return PopoverButton(action: { option in
+                             print("Selected option: \(option.title)")
+                         },
+                         options: options,
+                         defaultOptionId: 2,
+                         content: {
+                             Image(systemName: "line.3.horizontal.decrease")
+                                 .resizable()
+                                 .aspectRatio(contentMode: .fit)
+                                 .frame(width: 18, height: 18)
+                                 .foregroundColor(.gray)
+                                 .clipShape(Circle())
+                         })
 }
