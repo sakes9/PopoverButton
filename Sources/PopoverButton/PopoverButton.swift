@@ -9,7 +9,7 @@ public struct PopoverButton<Content: View>: View {
     let content: Content // Content
 
     // State properties
-    @State var defaultOptionId: Int? // Default option ID
+    @Binding var selectedOptionId: Int? // Default option ID
     @State private var showPopover: Bool = false // Popover display flag
 
     // For ViewInspector Tests
@@ -19,15 +19,15 @@ public struct PopoverButton<Content: View>: View {
     /// - Parameters:
     ///  - action: Action
     ///   - options: Options
-    ///   - defaultOptionId: Default option ID
+    ///   - selectedOptionId: Selected option ID
     ///   - content: Content
     public init(action: @escaping (PopoverButtonOption) -> Void,
                 options: [PopoverButtonOption],
-                defaultOptionId: Int? = nil,
+                selectedOptionId: Binding<Int?>,
                 @ViewBuilder content: () -> Content) {
         self.action = action
         self.options = options
-        self.defaultOptionId = defaultOptionId
+        self._selectedOptionId = selectedOptionId
         self.content = content()
     }
 
@@ -42,7 +42,7 @@ public struct PopoverButton<Content: View>: View {
                 ForEach(options, id: \.id) { option in
                     Button(action: {
                         action(option)
-                        defaultOptionId = option.id
+                        selectedOptionId = option.id
                         showPopover = false
                     }, label: {
                         HStack {
@@ -50,7 +50,7 @@ public struct PopoverButton<Content: View>: View {
                                 .foregroundColor(.gray)
 
                             // Show checkmark if the option is selected
-                            if option.id == defaultOptionId {
+                            if option.id == selectedOptionId {
                                 Spacer()
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.blue)
@@ -88,7 +88,7 @@ public struct PopoverButton<Content: View>: View {
                              print("Selected option: \(option.title)")
                          },
                          options: options,
-                         defaultOptionId: 2,
+                         selectedOptionId: .constant(2),
                          content: {
                              Image(systemName: "line.3.horizontal.decrease")
                                  .resizable()
