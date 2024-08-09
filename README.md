@@ -44,6 +44,8 @@ struct ContentView: View {
         PopoverButtonOption(id: 4, title: "Oldest First")
     ]
 
+    @State private var selectedOptionId: Int? = 2
+
     var body: some View {
         HStack {
             Text("Sort button")
@@ -51,7 +53,7 @@ struct ContentView: View {
                               print("Selected option: \(option)")
                           },
                           options: options,
-                          defaultOptionId: 1,
+                          selectedOptionId: $selectedOptionId,
                           content: {
                               Image(systemName: "line.3.horizontal.decrease")
                                   .resizable()
@@ -70,4 +72,4 @@ struct ContentView: View {
 
 - `action`: A callback that is called when an option is selected. It takes the selected `PopoverButtonOption` instance as an argument.
 - `options`: An array of `PopoverButtonOption` instances that contain the options to display in the popover.
-- `defaultOptionId`: The ID of the default option to display in the popover.
+- `selectedOptionId`: A binding to the selected option's ID. This is used to checked the selected option in the popover.
